@@ -1,4 +1,4 @@
-name: Build and Push Docker Image to ECR
+name: Construir e enviar imagem Docker para ECR
 
 on:
   push:
@@ -13,6 +13,7 @@ jobs:
       AWS_ACCOUNT_ID: "041096602253"
       ECR_REPOSITORY: bovespa
       IMAGE_TAG: v${{ github.run_number }}
+      LAMBDA_FUNCTION_NAME: teste
 
     steps:
       - name: Checkout do código
@@ -46,3 +47,9 @@ jobs:
       - name: Push para o ECR
         run: |
           docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
+
+      - name: Atualizar Lambda com nova imagem
+        run: |
+          aws lambda update-function-code \
+          --function-name $LAMBDA_FUNCTION_NAME \
+          --image-uri $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
