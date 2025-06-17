@@ -13,7 +13,7 @@ jobs:
       AWS_ACCOUNT_ID: "041096602253"
       ECR_REPOSITORY: bovespa
       IMAGE_TAG: v${{ github.run_number }}
-      LAMBDA_FUNCTION_NAME: teste
+      LAMBDA_FUNCTION_NAME: extracao_bovespa_docker
 
     steps:
       - name: Checkout do código
