@@ -10,7 +10,7 @@ jobs:
 
     env:
       AWS_REGION: us-east-1
-      AWS_ACCOUNT_ID: 041096602253
+      AWS_ACCOUNT_ID: "041096602253"
       ECR_REPOSITORY: bovespa
       IMAGE_TAG: v${{ github.run_number }}
 
