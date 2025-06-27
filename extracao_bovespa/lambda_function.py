@@ -14,6 +14,15 @@ dt_ref = current.strftime('%Y-%m-%d')
 dataproc = dt_ref.replace('-','')
 
 def bovespa()-> pd.DataFrame:
+    """
+    Coleta dados do índice IBOV (Bovespa) da B3.
+
+    Realiza uma requisição HTTP à API da B3 para obter os componentes do índice
+    IBOV para o dia atual. Os dados são retornados em um DataFrame pandas.
+
+    Returns:
+        pd.DataFrame: Um DataFrame contendo as ações do IBOV e seus atributos.
+    """
     payload = {'language': 'pt-br', 
                'pageNumber': 1, 
                'pageSize': 200, 

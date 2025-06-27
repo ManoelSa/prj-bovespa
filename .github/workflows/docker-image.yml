@@ -19,9 +19,6 @@ jobs:
       - name: Checkout do código
         uses: actions/checkout@v4
 
-      - name: Debug - mostrar AWS_ACCOUNT_ID
-        run: echo "AWS_ACCOUNT_ID is $AWS_ACCOUNT_ID"
-
       - name: Configurar credenciais da AWS (com token)
         uses: aws-actions/configure-aws-credentials@v3
         with:
