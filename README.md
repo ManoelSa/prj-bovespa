@@ -38,10 +38,10 @@ O pipeline ETL completo segue uma arquitetura serverless e gerenciada pela AWS, 
     * Esta segunda função Lambda, por sua vez, **chama um job de ETL no AWS Glue**.
 
 3.  **Transformação e Refinamento (AWS Glue) - Requisito 5 & 6:**
-    * O **Job Glue** é o coração da transformação dos dados. Ele é **desenvolvido no modo visual** (AWS Glue Studio ou visual editor) para facilitar a construção do pipeline de processamento.
+    * O **Job Glue** é o coração da transformação dos dados. Ele é **desenvolvido no modo visual** (AWS Glue Studio) para facilitar a construção do pipeline de processamento.
     * O job lê os dados da camada `raw` no S3.
     * Realiza as transformações e validações necessárias nos dados do pregão.
-    * Os **dados refinados são salvos em formato Parquet** em uma pasta na camada `refined` do S3 (ex: `refined/`), **particionados por data** (`dt_ref=YYYY-MM-DD/`) **e pelo código da ação do pregão** (ex: `codigo=ABEV3/`).
+    * Os **dados refinados são salvos em formato Parquet** em uma pasta na camada `refined` do S3, **particionados por data** (`dt_ref=YYYY-MM-DD/`) **e pelo código da ação do pregão** (ex: `codigo=ABEV3/`).
     
 
 4.  **Catálogo de Dados (AWS Glue Data Catalog) - Requisito 7:**
@@ -68,4 +68,39 @@ Este pipeline garante que os dados da B3 sejam processados de forma eficiente, g
 * **AWS ECR (Elastic Container Registry):** Repositório para armazenar a imagem Docker do scraper.
 * **AWS Glue:** Serviço ETL serverless para transformação e catalogação de dados.
 * **Amazon Athena:** Serviço de consulta interativa para dados no S3.
-* **AWS EventBridge (CloudWatch Events):** Para agendamento da execução diária da Lambda de scraping.
+* **Event notifications:** Para acionamento dos processos após arquivo pousado no S3 na camada raw.
+* **AWS EventBridge:** Para agendamento da execução diária do contêiner do scraper.
+
+### Representação do Fluxo
+
+```text
+[Agendador Diário: EventBridge]
+        |
+        | (Invoca) 
+        v
+[Lambda (Scraping B3 + Ingestão Raw no S3)]
+        |
+        | (extracao_bovespa_docker)
+        v
+[S3 - Camada Raw (Dados Brutos Parquet)]
+        |
+        | (Dispara Evento)
+        v
+[Lambda (Orquestrador Glue Job)]
+        |
+        | (start_job_glue)
+        v
+[AWS Glue Job (Refinamento ETL)]
+        |
+        | (etl_bovespa)
+        v
+[S3 - Camada Refined (Dados Refinados Parquet)]
+        |
+        | (Catálogo Automático)
+        v
+[AWS Glue Data Catalog]
+        | 
+        | (catalog)
+        v
+[Amazon Athena (Consulta Analítica)]
+```
