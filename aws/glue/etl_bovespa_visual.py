@@ -44,13 +44,13 @@ from myDataSource m
 SQLQuery_node1749692597878 = sparkSqlQuery(glueContext, query = SqlQuery0, mapping = {"myDataSource":DropDuplicates_node1749691095632}, transformation_ctx = "SQLQuery_node1749692597878")
 
 # Script generated for node Change Schema
-ChangeSchema_node1749691305107 = ApplyMapping.apply(frame=SQLQuery_node1749692597878, mappings=[("segment", "string", "setor", "string"), ("cod", "string", "codigo", "string"), ("asset", "string", "acao", "string"), ("type", "string", "tipo", "string"), ("part", "decimal", "part", "double"), ("partAcum", "decimal", "part_acum", "double"), ("theoricalQty", "bigint", "theoricalQty", "bigint"), ("dt_ref", "string", "dt_ref", "date")], transformation_ctx="ChangeSchema_node1749691305107")
+ChangeSchema_node1749691305107 = ApplyMapping.apply(frame=SQLQuery_node1749692597878, mappings=[("segment", "string", "setor", "string"), ("cod", "string", "codigo", "string"), ("asset", "string", "acao", "string"), ("type", "string", "tipo", "string"), ("part", "decimal", "part", "double"), ("partAcum", "decimal", "part_acum", "double"), ("theoricalQty", "long", "qtd_teorica", "bigint"), ("dt_ref", "string", "dt_ref", "date")], transformation_ctx="ChangeSchema_node1749691305107")
 
 # Script generated for node Aggregate
-Aggregate_node1749691185039 = sparkAggregate(glueContext, parentFrame = ChangeSchema_node1749691305107, groups = ["setor", "acao", "dt_ref", "codigo"], aggs = [], transformation_ctx = "Aggregate_node1749691185039")
+Aggregate_node1749691185039 = sparkAggregate(glueContext, parentFrame = ChangeSchema_node1749691305107, groups = ["setor", "acao", "dt_ref", "codigo"], aggs = [["qtd_teorica", "sum"]], transformation_ctx = "Aggregate_node1749691185039")
 
 # Script generated for node Rename Field
-RenameField_node1749693557003 = RenameField.apply(frame=Aggregate_node1749691185039, old_name="", new_name="", transformation_ctx="RenameField_node1749693557003")
+RenameField_node1749693557003 = RenameField.apply(frame=Aggregate_node1749691185039, old_name="`sum(qtd_teorica)`", new_name="soma_qtd_teorica", transformation_ctx="RenameField_node1749693557003")
 
 # Script generated for node Amazon S3
 AmazonS3_node1749691627621 = glueContext.getSink(path="s3://bck-bovespa/refined/", connection_type="s3", updateBehavior="UPDATE_IN_DATABASE", partitionKeys=["dt_ref", "codigo"], enableUpdateCatalog=True, transformation_ctx="AmazonS3_node1749691627621")
