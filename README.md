@@ -76,7 +76,7 @@ Este pipeline garante que os dados da B3 sejam processados de forma eficiente, g
 ```text
 [Agendador Diário: EventBridge]
         |
-        | (Invoca) 
+        | (trigger_etl_bovespa) 
         v
 [Lambda (Scraping B3 + Ingestão Raw no S3)]
         |
@@ -100,7 +100,7 @@ Este pipeline garante que os dados da B3 sejam processados de forma eficiente, g
         v
 [AWS Glue Data Catalog]
         | 
-        | (catalog)
+        | (default)
         v
 [Amazon Athena (Consulta Analítica)]
 ```
