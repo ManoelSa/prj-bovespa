@@ -58,7 +58,7 @@ Este pipeline garante que os dados da B3 sejam processados de forma eficiente, g
 
 ### Tecnologias Utilizadas
 
-* **Python:** Linguagem de programação principal.
+* **Python:** Linguagem de programação principal, requer python >= 3.12.6.
 * **`requests`:** Para fazer requisições HTTP à API da B3.
 * **`pandas`:** Para manipulação e tratamento de dados em DataFrame.
 * **`pyarrow`:** Para conversão de DataFrame para o formato Parquet.

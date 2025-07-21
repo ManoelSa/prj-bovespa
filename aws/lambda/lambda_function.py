@@ -10,7 +10,7 @@ def lambda_handler(event, context):
     print(f"Path do evento: s3://{bucket}/{key}")
 
     glue = boto3.client('glue')
-    job_name = 'etl_bovespa'#'etl_bovespa_v2'
+    job_name = 'etl_bovespa'
 
     try:
         response = glue.start_job_run(
