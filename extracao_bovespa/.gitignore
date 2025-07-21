@@ -3,4 +3,3 @@
 venv/
 tests/
 __pycache__/
-aws/glue/etl_bovespa_script.py
