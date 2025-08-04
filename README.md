@@ -1,6 +1,8 @@
 # Projeto de Coleta e Refinamento de Dados Bovespa
 
 Um pipeline ETL completo para coletar, refinar e disponibilizar dados diários da B3 (Bovespa) em um Data Lakehouse na AWS.
+## Diagrama da Arquitetura
+<img src='https://github.com/ManoelSa/prj-bovespa/blob/main/arquitetura_b3.PNG'>
 
 ## 🎯 Objetivo
 
